@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>>res;
+        for(int i=0;i<intervals.size();i++){
+            if(newInterval[1]<intervals[i][0]){  // if the newinterval in before a interval 
+                res.push_back(newInterval);
+                copy(intervals.begin()+i,intervals.end(),back_inserter(res));
+                return res;
+            }
+            else if(intervals[i][1]<newInterval[0])res.push_back(intervals[i]);  // if the newinterval in after a interval
+            else{   // if the interval in overlapping with any inerval so we will update a newinterval and not push it 
+            // into the res as of now because further this newinterval may overlapp with another interval
+                 newInterval[0]=min(newInterval[0],intervals[i][0]);
+                 newInterval[1]=max(newInterval[1],intervals[i][1]);
+            }
+        }
+        res.push_back(newInterval);  // if the intervals may be empty
+        return res;
+    }
+};
